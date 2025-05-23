@@ -1,3 +1,6 @@
+import * as XLSX from "xlsx";
+import { Button } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import { fetchWithAuth } from "../../api/fetchWithAuth";
 import { useNavigate } from "react-router-dom";
@@ -99,6 +102,65 @@ const InvoicePage = ({ searchQuery, locationFilter, typeFilter, fromDate, toDate
     }
   };
 
+  const fetchAllInvoices = async () => {
+    try {
+      let allInvoices: Invoice[] = [];
+      let page = 0;
+      let totalPages = 1;
+
+      do {
+        const params = new URLSearchParams();
+        params.set("size", pageSize.toString());
+        params.set("page", page.toString());
+        params.set("sort", "createdAt,desc");
+
+        if (locationFilter) params.set("locationId", locationFilter);
+        if (typeFilter) params.set("searchText", typeFilter);
+        if (fromDate) params.set("fromDate", fromDate);
+        if (toDate) params.set("toDate", toDate);
+
+        const response = await fetchWithAuth<{
+          content: Invoice[];
+          totalElements: number;
+          totalPages: number;
+        }>(`${API_BASE_URL}/app-data-service/api/invoices?${params.toString()}`);
+
+        const filteredInvoices = response.content.filter((invoice) => invoice.id.toLowerCase().includes(searchQuery.toLowerCase())).filter((invoice) => !typeFilter || invoice.type === typeFilter);
+
+        allInvoices = [...allInvoices, ...filteredInvoices];
+        totalPages = response.totalPages;
+        page++;
+      } while (page < totalPages);
+
+      return allInvoices;
+    } catch (error) {
+      console.error("Error fetching all invoices for export:", error);
+      return [];
+    }
+  };
+
+  const handleExportExcel = async () => {
+    const allInvoices = await fetchAllInvoices();
+
+    const exportableData = allInvoices.map((inv) => ({
+      "Invoice ID": inv.id,
+      Location: locationMap[inv.locationId] || inv.locationId,
+      "User ID": inv.userId,
+      "Ticket Count": inv.ticketsCount,
+      Description: inv.description,
+      Type: inv.type,
+      Amount: inv.amount,
+      "Voucher Amount": inv.voucherAmount,
+      "Final Amount": inv.finalAmount,
+      "Created At": new Date(inv.createdAt).toLocaleString(),
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(exportableData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
+    XLSX.writeFile(workbook, "invoices.xlsx");
+  };
+
   const fetchTotalRevenue = async () => {
     if (!fromDate || !toDate) {
       setTotalRevenue(0);
@@ -152,11 +214,16 @@ const InvoicePage = ({ searchQuery, locationFilter, typeFilter, fromDate, toDate
         <div className="text-gray-600 text-sm">
           Total invoices: <span className="font-semibold">{totalInvoices}</span>
         </div>
-        <Tooltip title="Total revenue calculated from all invoices within the selected date range and location.">
-          <div className="text-gray-600 text-sm cursor-pointer">
-            Total revenue: <span className="font-semibold">{formatUSD(totalRevenue)}</span>
-          </div>
-        </Tooltip>
+        <div className="flex items-center space-x-4">
+          <Tooltip title="Total revenue calculated from all invoices within the selected date range and location.">
+            <div className="text-gray-600 text-sm cursor-pointer">
+              Total revenue: <span className="font-semibold">{formatUSD(totalRevenue)}</span>
+            </div>
+          </Tooltip>
+          <Button icon={<DownloadOutlined />} onClick={handleExportExcel}>
+            Export Excel
+          </Button>
+        </div>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full table-auto border-collapse border border-gray-200">
