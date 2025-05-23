@@ -91,6 +91,7 @@ const NotCustomerManagementList: React.FC<NotCustomerManagementListProps> = ({ s
             <th className="border px-4 py-2">No</th>
             <th className="border px-4 py-2">Name</th>
             <th className="border px-4 py-2">Mobile</th>
+            <th className="border px-4 py-2">Email</th>
             <th className="border px-4 py-2">Status</th>
             <th className="border px-4 py-2">Details</th>
           </tr>
@@ -101,6 +102,7 @@ const NotCustomerManagementList: React.FC<NotCustomerManagementListProps> = ({ s
               <td className="border px-4 py-2">{(currentPage - 1) * pageSize + index + 1}</td>
               <td className="border px-4 py-2">{user.username ? user.username.split("@")[0] : "N/A"}</td>
               <td className="border px-4 py-2">{user.phone}</td>
+              <td className="border px-4 py-2">{user.email}</td>
               <td className="border px-4 py-2">{user.emailVerified ? "Verified" : "Unverified"}</td>
               <td className="border px-4 py-2">
                 <Link to={`/not-user-details/${user.id}`} className="text-blue-500 hover:text-blue-700">

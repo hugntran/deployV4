@@ -122,6 +122,13 @@ const CreateVoucher = () => {
     return valid;
   };
 
+  const localToISOString = (datetimeStr: string) => {
+    const localDate = new Date(datetimeStr);
+    const offsetMs = localDate.getTimezoneOffset() * 60 * 1000;
+    const utcDate = new Date(localDate.getTime() - offsetMs);
+    return utcDate.toISOString();
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -182,8 +189,8 @@ const CreateVoucher = () => {
         thumbnailURL,
         userSpecific: false,
         allowedUserIds: [],
-        validFrom: new Date(form.validFrom).toISOString(),
-        validUntil: new Date(form.validUntil).toISOString(),
+        validFrom: localToISOString(form.validFrom),
+        validUntil: localToISOString(form.validUntil),
       };
 
       await axios.post(`${API_BASE_URL}/payment/vouchers/create`, payload, {
@@ -229,6 +236,9 @@ const CreateVoucher = () => {
 
       {/* Input fields */}
       <div className="space-y-4">
+        <label htmlFor="code" className="block font-medium mb-1">
+          Voucher Code
+        </label>
         <input
           name="code"
           placeholder="Code"
@@ -237,6 +247,9 @@ const CreateVoucher = () => {
           required
           className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        <label htmlFor="code" className="block font-medium mb-1">
+          Title
+        </label>
         <input
           name="title"
           placeholder="Title"
@@ -245,6 +258,9 @@ const CreateVoucher = () => {
           required
           className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        <label htmlFor="code" className="block font-medium mb-1">
+          Description
+        </label>
         <textarea
           name="description"
           placeholder="Description"
@@ -253,14 +269,18 @@ const CreateVoucher = () => {
           required
           className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-
+        <label htmlFor="code" className="block font-medium mb-1">
+          Upload image
+        </label>
         <input
           type="file"
           accept="image/*"
           onChange={(e) => setThumbnailFile(e.target.files?.[0] || null)}
           className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-
+        <label htmlFor="code" className="block font-medium mb-1">
+          Discount amount
+        </label>
         <input
           name="discountAmount"
           placeholder="Discount Amount"
@@ -270,6 +290,9 @@ const CreateVoucher = () => {
           className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         {errors.discountAmount && <p className="text-red-500 text-sm">{errors.discountAmount}</p>}
+        <label htmlFor="code" className="block font-medium mb-1">
+          Minimum spent amount
+        </label>
         <input
           name="minimumSpentAmount"
           placeholder="Minimum Spent"
@@ -283,7 +306,9 @@ const CreateVoucher = () => {
           <input type="checkbox" name="percentage" checked={form.percentage} onChange={handleChange} className="h-5 w-5" />
           <label>Is Percentage?</label>
         </div>
-
+        <label htmlFor="code" className="block font-medium mb-1">
+          Max usage per user
+        </label>
         <input
           name="maxUsagePerUser"
           placeholder="Max Usage Per User"
@@ -293,6 +318,9 @@ const CreateVoucher = () => {
           className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         {errors.maxUsagePerUser && <p className="text-red-500 text-sm">{errors.maxUsagePerUser}</p>}
+        <label htmlFor="code" className="block font-medium mb-1">
+          Total usage limit
+        </label>
         <input
           name="totalUsageLimit"
           placeholder="Total Usage Limit"
@@ -302,6 +330,9 @@ const CreateVoucher = () => {
           className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         {errors.totalUsageLimit && <p className="text-red-500 text-sm">{errors.totalUsageLimit}</p>}
+        <label htmlFor="code" className="block font-medium mb-1">
+          Valid from
+        </label>
         <input
           name="validFrom"
           placeholder="Valid From"
@@ -311,6 +342,9 @@ const CreateVoucher = () => {
           className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         {errors.validFrom && <p className="text-red-500 text-sm">{errors.validFrom}</p>}
+        <label htmlFor="code" className="block font-medium mb-1">
+          Valid until
+        </label>
         <input
           name="validUntil"
           placeholder="Valid Until"

@@ -89,7 +89,7 @@ const InvoicePage = ({ searchQuery, locationFilter, typeFilter, fromDate, toDate
         totalPages: number;
       }>(`${API_BASE_URL}/app-data-service/api/invoices?${params.toString()}`);
 
-      const filteredInvoices = response.content.filter((invoice) => invoice.id.toLowerCase().includes(searchQuery.toLowerCase()));
+      const filteredInvoices = response.content.filter((invoice) => invoice.id.toLowerCase().includes(searchQuery.toLowerCase())).filter((invoice) => !typeFilter || invoice.type === typeFilter);
 
       setInvoices(filteredInvoices);
       setTotalPages(response.totalPages);

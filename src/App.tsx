@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from "react-router";
 import SignIn from "./pages/AuthPages/SignIn";
 import NotFound from "./pages/OtherPage/NotFound";
 import Videos from "./pages/UiElements/Videos";
@@ -39,6 +39,16 @@ import NotUserEditPage from "./components/ContentTop/NotUserEditPage";
 import StaffManageSlot from "./pages/StaffManageSlot";
 import StaffManageTicket from "./pages/StaffManageTicket";
 
+// ProtectedRoute component
+const getUserRole = () => {
+  return localStorage.getItem("userRole") || "";
+};
+
+function ProtectedRoute({ allowedRoles }: { allowedRoles: string[] }) {
+  const role = getUserRole();
+  return allowedRoles.includes(role) ? <Outlet /> : <Navigate to="*" replace />;
+}
+
 export default function App() {
   return (
     <>
@@ -47,48 +57,54 @@ export default function App() {
         <Routes>
           {/* Dashboard Layout */}
           <Route element={<AppLayout />}>
-            <Route index path="/home" element={<Home />} />
+            <Route element={<ProtectedRoute allowedRoles={["ADMIN", "STAFF"]} />}>
+              <Route index path="/home" element={<Home />} />
+              {/* complaint */}
+              <Route path="/admin-complaint-page" element={<AdminComplaintPage />} />
+              <Route path="/complaint/:id" element={<ComplaintDetail />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+              {/* Location */}
+              <Route path="/manage-parking-charging" element={<ManageParkingCharging />} />
+              <Route path="/add-facility-form" element={<AddFacilityForm />} />
+              <Route path="/slot-list" element={<ManageSlot />} />
+
+              {/* invoice */}
+              <Route path="/invoice-list" element={<ManageTicketList />} />
+              <Route path="/invoice-detail/:id" element={<InvoiceDetail />} />
+              <Route path="/refund-list" element={<ManageRefunds />} />
+              <Route path="/refund-list/:id" element={<RefundDetailPage />} />
+
+              {/* voucher */}
+              <Route path="/voucher-management-list" element={<VoucherManagementList />} />
+              <Route path="/add-voucher" element={<CreateVoucher />} />
+              <Route path="/vouchers/:id" element={<VoucherDetails />} />
+
+              {/* user */}
+              <Route path="/customer-management" element={<CustomerManagement />} />
+              <Route path="/not-customer-management" element={<NotCustomerManagement />} />
+              <Route path="/user-details/:userId" element={<UserDetailPage />} />
+              <Route path="/not-user-details/:userId" element={<NotCustomerDetailPage />} />
+              <Route path="/create-user" element={<CreateStaffPage />} />
+              <Route path="/user-details/:userId/edit" element={<UserEditPage />} />
+              <Route path="/not-user-details/:userId/edit" element={<NotUserEditPage />} />
+
+              {/* Ticket */}
+              <Route path="/ticket-management" element={<ManageTicket />} />
+            </Route>
+
+            <Route element={<ProtectedRoute allowedRoles={["STAFF"]} />}>
+              <Route path="/staff-slot-list" element={<StaffManageSlot />} />
+              <Route path="/staff-ticket-management" element={<StaffManageTicket />} />
+            </Route>
+
+            {/* Forms */}
+            <Route path="/form-elements" element={<FormElements />} />
 
             {/* Others Page */}
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/blank" element={<Blank />} />
-
-            {/* Location */}
-            <Route path="/manage-parking-charging" element={<ManageParkingCharging />} />
-            <Route path="/add-facility-form" element={<AddFacilityForm />} />
-            <Route path="/slot-list" element={<ManageSlot />} />
-            <Route path="/staff-slot-list" element={<StaffManageSlot />} />
-
-            {/* invoice */}
-            <Route path="/invoice-list" element={<ManageTicketList />} />
-            <Route path="/invoice-detail/:id" element={<InvoiceDetail />} />
-            <Route path="/refund-list" element={<ManageRefunds />} />
-            <Route path="/refund-list/:id" element={<RefundDetailPage />} />
-
-            {/* complaint */}
-            <Route path="/admin-complaint-page" element={<AdminComplaintPage />} />
-            <Route path="/complaint/:id" element={<ComplaintDetail />} />
-
-            {/* voucher */}
-            <Route path="/voucher-management-list" element={<VoucherManagementList />} />
-            <Route path="/add-voucher" element={<CreateVoucher />} />
-            <Route path="/vouchers/:id" element={<VoucherDetails />} />
-
-            {/* user */}
-            <Route path="/customer-management" element={<CustomerManagement />} />
-            <Route path="/not-customer-management" element={<NotCustomerManagement />} />
-            <Route path="/user-details/:userId" element={<UserDetailPage />} />
-            <Route path="/not-user-details/:userId" element={<NotCustomerDetailPage />} />
-            <Route path="/create-user" element={<CreateStaffPage />} />
-            <Route path="/user-details/:userId/edit" element={<UserEditPage />} />
-            <Route path="/not-user-details/:userId/edit" element={<NotUserEditPage />} />
-
-            {/* Ticket */}
-            <Route path="/ticket-management" element={<ManageTicket />} />
-            <Route path="/staff-ticket-management" element={<StaffManageTicket />} />
-
-            {/* Forms */}
-            <Route path="/form-elements" element={<FormElements />} />
 
             {/* Tables */}
             <Route path="/basic-tables" element={<BasicTables />} />

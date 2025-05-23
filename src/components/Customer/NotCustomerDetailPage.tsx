@@ -87,8 +87,14 @@ const NotCustomerDetailPage: React.FC = () => {
               }}
             />
             <div>
-              <p className="text-xl text-gray-700">
-                <strong>Username:</strong> {user.username ? user.username.split("@")[0] : "N/A"}
+              <p className="text-lg text-gray-600">
+                <strong>User name:</strong> {user.username ? user.username.split("@")[0] : "N/A"}
+              </p>
+              <p className="text-lg text-gray-600 mt-2">
+                <strong>First name:</strong> {user.firstName}
+              </p>
+              <p className="text-lg text-gray-600 mt-2">
+                <strong>Last name:</strong> {user.lastName}
               </p>
               <p className="text-lg text-gray-600 mt-2">
                 <strong>Email:</strong> {user.email}

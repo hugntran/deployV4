@@ -110,8 +110,12 @@ const InvoiceDetail = () => {
             <tr className="hover:bg-gray-50">
               <td className="px-6 py-4 border-b border-gray-200">{invoice.description}</td>
               <td className="px-6 py-4 border-b border-gray-200">{invoice.ticketsCount}</td>
-              <td className="px-6 py-4 border-b border-gray-200 text-gray-700">{formatUSD(invoice.amount / invoice.ticketsCount)}</td>
-              <td className="px-6 py-4 border-b border-gray-200 text-gray-700">{formatUSD(invoice.amount)}</td>
+              <td className="px-6 py-4 border-b border-gray-200 text-gray-700">
+                {formatUSD(invoice.type === "TIME_CHANGE_PAYMENT" || invoice.type === "EXTEND_BOOKING_PAYMENT" ? invoice.finalAmount / invoice.ticketsCount : invoice.amount / invoice.ticketsCount)}
+              </td>
+              <td className="px-6 py-4 border-b border-gray-200 text-gray-700">
+                {formatUSD(invoice.type === "TIME_CHANGE_PAYMENT" || invoice.type === "EXTEND_BOOKING_PAYMENT" ? invoice.finalAmount : invoice.amount)}
+              </td>
             </tr>
             <tr className="bg-gray-50 hover:bg-gray-100">
               <td className="px-6 py-4 border-b border-gray-200" colSpan={3}>
