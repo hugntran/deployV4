@@ -67,23 +67,21 @@ export const useNotificationSocket = (onMessage: (notification: NotificationData
                 }
                 break;
               case "Verify-Conflict":
-                if (data.parent?.ticket && data.parent.slotNumber) {
-                  const t = data.parent.ticket;
+                if (data.parent.ticket && data.parent.slotNumber) {
                   return {
-                    locationId: t.locationId,
+                    locationId: data.parent.ticket.locationId,
                     slotNumber: data.parent.slotNumber,
-                    ticketId: t.id,
+                    ticketId: data.parent.ticket.id,
                   };
                 }
                 break;
               case "Verify-Time-Change":
               case "Overdue":
                 if (data.ticket && data.slotNumber) {
-                  const t = data.ticket;
                   return {
-                    locationId: t.locationId,
+                    locationId: data.ticket.locationId,
                     slotNumber: data.slotNumber,
-                    ticketId: t.id,
+                    ticketId: data.ticket.id,
                   };
                 }
                 break;
