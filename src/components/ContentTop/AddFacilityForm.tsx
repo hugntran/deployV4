@@ -138,7 +138,14 @@ const AddFacilityForm = () => {
       locationStatus: "VALID",
       services,
       ...(services.includes("PARKING") && { totalParkingSlots }),
-      ...(services.includes("CHARGING") && { chargingGateDistribution }),
+      chargingGateDistribution: services.includes("CHARGING")
+        ? chargingGateDistribution
+        : {
+            "11W": 0,
+            "22W": 0,
+            "50W": 0,
+            "100W": 0,
+          },
     };
 
     console.log("Payload being sent to the server:", JSON.stringify(locationData));
