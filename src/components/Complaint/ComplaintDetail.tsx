@@ -118,7 +118,7 @@ const ComplaintDetail = () => {
                   onClick={() => setSelectedImage(url)}
                   onError={(e) => {
                     e.currentTarget.onerror = null;
-                    e.currentTarget.src = "/images/country/anh-27-meme-dang-yeu-didongmy.jpg";
+                    e.currentTarget.src = "/images/country/michael-fousert-a7WIJiOZDO0-unsplash.jpg";
                   }}
                 />
               ))}

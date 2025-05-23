@@ -21,6 +21,13 @@ export default function TopLocationsTable({ fromDate, toDate }: Props) {
   useEffect(() => {
     if (!fromDate || !toDate) return;
 
+    function fixDateToLocal(dateStr: string) {
+      const date = new Date(dateStr);
+      const tzOffset = date.getTimezoneOffset() * 60000; // offset in ms
+      const localDate = new Date(date.getTime() - tzOffset);
+      return localDate.toISOString().split("T")[0];
+    }
+
     const fetchData = async () => {
       setLoading(true);
       setError(null);
@@ -34,8 +41,10 @@ export default function TopLocationsTable({ fromDate, toDate }: Props) {
 
       try {
         const params = new URLSearchParams();
-        params.append("fromDate", fromDate);
-        params.append("toDate", toDate);
+        const fromDateLocal = fixDateToLocal(fromDate);
+        const toDateLocal = fixDateToLocal(toDate);
+        params.append("fromDate", fromDateLocal);
+        params.append("toDate", toDateLocal);
 
         const response = await fetch(`${API_BASE_URL}/app-data-service/api/invoices/top-locations?${params.toString()}`, {
           headers: {

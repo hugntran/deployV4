@@ -68,7 +68,6 @@ export default function EcommerceMetrics() {
           "Content-Type": "application/json",
         },
       });
-
       const data = await response.json();
       setInvoiceCount(data.invoices ?? 0);
       setRefundCount(data.refunds ?? 0);
@@ -92,7 +91,6 @@ export default function EcommerceMetrics() {
           "Content-Type": "application/json",
         },
       });
-
       const data = await response.json();
       setComplaintCount(data?.disputes ?? 0);
     } catch (err) {

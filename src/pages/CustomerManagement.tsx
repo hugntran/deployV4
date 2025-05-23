@@ -17,7 +17,7 @@ export default function CustomerManagement() {
         <div className="flex flex-col gap-6">
           {/* Top filter bar */}
           <div className="flex flex-col md:flex-row md:flex-wrap md:items-center md:justify-between gap-4 bg-gray-50 p-3 rounded-lg shadow-sm">
-            <SearchBar value={searchText} onChange={setSearchText} placeholder="🔍 Search by name" />
+            <SearchBar value={searchText} onChange={setSearchText} placeholder="🔍 Find by name, mail/ phone" />
 
             <div className="flex justify-end gap-4">
               {/* Status filter dropdown */}

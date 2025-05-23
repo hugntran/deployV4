@@ -36,7 +36,11 @@ const ComplaintList: React.FC<ComplaintListProps> = ({ searchText, statusFilter 
 
   // Apply search text and status filter to the complaint list
   const filteredComplaints = complaints.filter((complaint) => {
-    const matchSearch = complaint.title.toLowerCase().includes(searchText.toLowerCase()) || complaint.userEmail.toLowerCase().includes(searchText.toLowerCase());
+    const normalizedInputEmail = complaint.inputEmail.replace("@gmail.com", "").toLowerCase();
+    const matchSearch =
+      complaint.title.toLowerCase().includes(searchText.toLowerCase()) ||
+      complaint.userEmail.toLowerCase().includes(searchText.toLowerCase()) ||
+      normalizedInputEmail.includes(searchText.toLowerCase());
 
     const matchStatus = statusFilter === "ALL" || complaint.status.toLowerCase() === statusFilter.toLowerCase();
 

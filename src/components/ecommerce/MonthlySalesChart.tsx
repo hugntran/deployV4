@@ -50,12 +50,10 @@ export default function MonthlySalesChart({ startDate, endDate, locationId }: Mo
             "Content-Type": "application/json",
           },
         });
-
         if (!response.ok) {
           setChartData(null);
           return;
         }
-
         const rawData = await response.json();
 
         const startMonth = formatDate(startDate!).slice(0, 7);

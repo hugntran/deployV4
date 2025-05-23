@@ -51,7 +51,6 @@ export default function Ecommerce() {
           "Content-Type": "application/json",
         },
       });
-
       if (!res.ok) {
         console.error("Error fetching revenue:", res.statusText);
         setTotalRevenue(null);
@@ -168,7 +167,14 @@ export default function Ecommerce() {
       }
 
       const targetDate = new Date();
-      const toDateStr = (date: Date) => date.toISOString().split("T")[0];
+
+      // local date string
+      const toDateStr = (date: Date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      };
 
       const filteredData = allData.filter((item: any) => item.ticket?.locationId === locationId);
 
@@ -179,7 +185,6 @@ export default function Ecommerce() {
         const updatedAt = new Date(item.updatedAt);
 
         const isSameDay = toDateStr(updatedAt) === toDateStr(targetDate);
-
         if (ticketId && item.ticket?.isCheckOut === true && isSameDay && !uniqueTicketsMap.has(ticketId)) {
           uniqueTicketsMap.set(ticketId, item);
         }
@@ -247,7 +252,6 @@ export default function Ecommerce() {
         console.error("Error fetching Extend Booking Payment count:", response.statusText);
         return;
       }
-
       const data = await response.json();
       setExtendBookingPaymentCount(data?.totalElements ?? 0);
     } catch (err) {

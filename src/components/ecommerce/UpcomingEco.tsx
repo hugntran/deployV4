@@ -15,7 +15,10 @@ type TicketData = {
 };
 
 const formatDate = (date: Date): string => {
-  return date.toISOString().split("T")[0]; // yyyy-mm-dd
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${year}-${month}-${day}`; // yyyy-mm-dd
 };
 
 const UpcomingEco: React.FC = () => {
@@ -35,7 +38,6 @@ const UpcomingEco: React.FC = () => {
         const res = await fetchWithAuth<{ content: TicketData[] }>(
           `${API_BASE_URL}/app-data-service/tickets/pageable/find?page=0&size=100&sort=createdAt,DESC&fromDate=${todayStr}&toDate=${todayStr}&locationId=${locationId}`
         );
-
         const upcomingTickets = res.content.filter((t) => {
           const start = new Date(t.ticket.endDateTime);
           return start > now && start <= endOfToday && t.ticket.isCheckIn === null;

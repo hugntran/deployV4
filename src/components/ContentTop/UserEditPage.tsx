@@ -51,7 +51,7 @@ const UserEditPage: React.FC = () => {
   const navigate = useNavigate();
   const { userId } = useParams<{ userId: string }>();
   const user = (location.state as { user: User }).user;
-
+  const [showPassword, setShowPassword] = React.useState(false);
   const [uploading, setUploading] = React.useState(false);
   const [isImageError, setIsImageError] = React.useState(false);
 
@@ -230,15 +230,21 @@ const UserEditPage: React.FC = () => {
             </div>
           </div>
         </div>
-        <input
-          name="newPassword"
-          value={formData.newPassword}
-          onChange={handleChange}
-          placeholder="New Password (leave blank to keep)"
-          type="password"
-          className="w-full p-2 border rounded"
-          autoComplete="new-password"
-        />
+        <div className="relative">
+          <input
+            name="newPassword"
+            value={formData.newPassword}
+            onChange={handleChange}
+            placeholder="New Password (leave blank to keep)"
+            type={showPassword ? "text" : "password"}
+            className="w-full p-2 border rounded pr-10"
+            autoComplete="new-password"
+          />
+          <button type="button" onClick={() => setShowPassword((prev) => !prev)} className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm text-blue-600 hover:underline">
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
+
         <div className="flex space-x-4 mt-4">
           <button onClick={handleSubmit} disabled={uploading} className={`px-4 py-2 rounded text-white ${uploading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-800"}`}>
             {uploading ? "Uploading..." : "Save"}

@@ -18,8 +18,8 @@ export default function AdminComplaintPage() {
           {/* Top section: search bar and filter controls */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-gray-50 p-4 rounded-xl shadow-sm border border-gray-200">
             {/* Search input for filtering complaints by title or email */}
-            <div className="w-full md:w-64">
-              <SearchBar value={searchText} onChange={setSearchText} placeholder="🔍 Search by title or email" />
+            <div className="w-full md:w-76">
+              <SearchBar value={searchText} onChange={setSearchText} placeholder="🔍 Search by customer, email or title" />
             </div>
             {/* Status dropdown filter */}
             <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">

@@ -33,6 +33,13 @@ export default function StaffRevenueTable({ startDate, endDate }: StaffRevenueTa
     const fetchData = async () => {
       if (!startDate || !endDate) return;
 
+      function formatDateLocal(date: Date): string {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      }
+
       setLoading(true);
       setError(null);
 
@@ -65,8 +72,8 @@ export default function StaffRevenueTable({ startDate, endDate }: StaffRevenueTa
         // 3. Fetch revenue per staff
         const allRevenues: CombinedData[] = [];
 
-        const fromDate = startDate.toISOString().slice(0, 10);
-        const toDate = endDate.toISOString().slice(0, 10);
+        const fromDate = formatDateLocal(startDate);
+        const toDate = formatDateLocal(endDate);
 
         for (const staff of staffUsers) {
           const params = new URLSearchParams({
@@ -81,7 +88,6 @@ export default function StaffRevenueTable({ startDate, endDate }: StaffRevenueTa
               Authorization: `Bearer ${token}`,
             },
           });
-
           if (revenueRes.ok) {
             const revenueJson: RevenueData[] = await revenueRes.json();
             revenueJson.forEach((item) => {

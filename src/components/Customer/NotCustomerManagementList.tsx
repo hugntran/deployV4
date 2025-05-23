@@ -33,7 +33,7 @@ const NotCustomerManagementList: React.FC<NotCustomerManagementListProps> = ({ s
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const pageSize = 20;
+  const pageSize = 100;
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -77,7 +77,11 @@ const NotCustomerManagementList: React.FC<NotCustomerManagementListProps> = ({ s
     const searchValue = searchText.toLowerCase();
     const statusMatches = statusFilter ? (statusFilter === "Verified" ? user.emailVerified : !user.emailVerified) : true;
 
-    return (user.username?.toLowerCase().includes(searchValue) || user.id.toLowerCase().includes(searchValue)) && statusMatches;
+    const usernameMatch = user.username?.toLowerCase().includes(searchValue);
+    const emailMatch = user.email?.toLowerCase().includes(searchValue);
+    const phoneMatch = user.phone?.toLowerCase().includes(searchValue);
+
+    return (usernameMatch || emailMatch || phoneMatch) && statusMatches;
   });
 
   if (loading) return <p>Loading users...</p>;
@@ -90,7 +94,7 @@ const NotCustomerManagementList: React.FC<NotCustomerManagementListProps> = ({ s
           <tr className="bg-gray-100">
             <th className="border px-4 py-2">No</th>
             <th className="border px-4 py-2">Name</th>
-            <th className="border px-4 py-2">Mobile</th>
+            <th className="border px-4 py-2">Phone number</th>
             <th className="border px-4 py-2">Email</th>
             <th className="border px-4 py-2">Status</th>
             <th className="border px-4 py-2">Details</th>
