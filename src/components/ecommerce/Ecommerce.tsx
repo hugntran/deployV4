@@ -307,7 +307,7 @@ export default function Ecommerce() {
         </div>
 
         <div className="flex-[0.4] bg-white rounded-2xl shadow-md p-6 flex flex-col items-center justify-center">
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">Fine amount $</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-2">Amount Collected Today $</h2>
           {loadingRevenue ? (
             <p className="text-gray-500 italic">Loading...</p>
           ) : totalRevenue !== null ? (
