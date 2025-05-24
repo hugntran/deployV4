@@ -8,6 +8,7 @@ type TicketData = {
     startDateTime: string;
     endDateTime: string;
     isCheckIn: boolean | null;
+    status: string;
   };
   locationName: string;
   slotNumber: string;
@@ -40,7 +41,7 @@ const UpcomingEco: React.FC = () => {
 
         const upcomingTickets = res.content.filter((t) => {
           const endDate = new Date(t.ticket.endDateTime);
-          return t.ticket.isCheckIn !== true && endDate > now;
+          return t.ticket.isCheckIn !== true && endDate > now && t.ticket.status !== "PAYMENT_EXPIRED";
         });
 
         setTickets(upcomingTickets.slice(0, 5));
