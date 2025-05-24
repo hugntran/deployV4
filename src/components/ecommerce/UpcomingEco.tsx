@@ -36,7 +36,7 @@ const UpcomingEco: React.FC = () => {
         const endOfToday = new Date(todayStr + "T23:59:59");
 
         const res = await fetchWithAuth<{ content: TicketData[] }>(
-          `${API_BASE_URL}/app-data-service/tickets/pageable/find?page=0&size=100&sort=createdAt,DESC&fromDate=${todayStr}&toDate=${todayStr}&locationId=${locationId}`
+          `${API_BASE_URL}/app-data-service/tickets/pageable/find?page=0&size=100&sort=createdAt,DESC&status=PAID&fromDate=${todayStr}&toDate=${todayStr}&locationId=${locationId}`
         );
         const upcomingTickets = res.content.filter((t) => {
           const start = new Date(t.ticket.endDateTime);
@@ -58,7 +58,7 @@ const UpcomingEco: React.FC = () => {
 
   return (
     <div className="bg-white p-4 rounded-xl shadow-md">
-      <h2 className="text-lg font-semibold mb-4">🎟️ Upcoming Tickets Today</h2>
+      <h2 className="text-lg font-semibold mb-4">🎟️ Upcoming Tickets</h2>
       <table className="w-full text-sm text-left border">
         <thead className="bg-gray-100 text-gray-700">
           <tr>
