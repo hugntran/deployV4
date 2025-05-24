@@ -33,14 +33,14 @@ const UpcomingEco: React.FC = () => {
 
         const now = new Date();
         const todayStr = formatDate(now);
-        const endOfToday = new Date(todayStr + "T23:59:59");
 
         const res = await fetchWithAuth<{ content: TicketData[] }>(
-          `${API_BASE_URL}/app-data-service/tickets/pageable/find?page=0&size=100&sort=createdAt,DESC&status=PAID&fromDate=${todayStr}&toDate=${todayStr}&locationId=${locationId}`
+          `${API_BASE_URL}/app-data-service/tickets/pageable/find?page=0&size=100&sort=createdAt,DESC&fromDate=${todayStr}&toDate=${todayStr}&locationId=${locationId}`
         );
+
         const upcomingTickets = res.content.filter((t) => {
-          const start = new Date(t.ticket.endDateTime);
-          return start > now && start <= endOfToday && t.ticket.isCheckIn === null;
+          const endDate = new Date(t.ticket.endDateTime);
+          return t.ticket.isCheckIn !== true && endDate > now;
         });
 
         setTickets(upcomingTickets.slice(0, 5));
