@@ -38,6 +38,7 @@ export default function VoucherManagementList() {
                   <option value="IN_PROGRESS">In Progress</option>
                   <option value="UP_COMING">Up Coming</option>
                   <option value="EXPIRED">Expired</option>
+                  <option value="OUT_OF_STOCK">Out of stock</option>
                 </select>
               </div>
             </div>

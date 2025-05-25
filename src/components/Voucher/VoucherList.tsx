@@ -30,12 +30,14 @@ const statusColorMap: Record<string, string> = {
   IN_PROGRESS: "bg-blue-100 text-blue-700",
   EXPIRED: "bg-gray-100 text-gray-700",
   UP_COMING: "bg-yellow-100 text-yellow-700",
+  OUT_OF_STOCK: "bg-red-100 text-red-700",
 };
 
 const statusPriority: Record<string, number> = {
   IN_PROGRESS: 1,
   UP_COMING: 2,
   EXPIRED: 3,
+  OUT_OF_STOCK: 4,
 };
 
 const ITEMS_PER_PAGE = 20;
