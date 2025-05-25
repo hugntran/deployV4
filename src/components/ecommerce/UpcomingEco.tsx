@@ -41,7 +41,7 @@ const UpcomingEco: React.FC = () => {
 
         const upcomingTickets = res.content.filter((t) => {
           const endDate = new Date(t.ticket.endDateTime);
-          return t.ticket.isCheckIn !== true && endDate > now && t.ticket.status !== "PAYMENT_EXPIRED" && t.ticket.status !== "PAYMENT_REQUIRED";
+          return t.ticket.isCheckIn !== true && endDate > now && t.ticket.status !== "PAYMENT_EXPIRED" && t.ticket.status !== "PAYMENT_REQUIRED" && t.ticket.status !== "CANCELED";
         });
 
         setTickets(upcomingTickets.slice(0, 5));
