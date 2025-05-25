@@ -8,7 +8,7 @@ import { useMemo } from "react";
  */
 export function useTicketGroups(tickets: any[]) {
   const upComing = useMemo(() => {
-    return tickets.filter((t) => t.isCheckIn === null && t.status !== "PAYMENT_EXPIRED" && new Date(t.endDateTime) > new Date());
+    return tickets.filter((t) => t.isCheckIn === null && t.status !== "PAYMENT_EXPIRED" && t.status !== "PAYMENT_REQUIRED" && new Date(t.endDateTime) > new Date());
   }, [tickets]);
 
   const onService = useMemo(() => {
